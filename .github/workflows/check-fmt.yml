@@ -28,4 +28,4 @@ jobs:
 
       - uses: wagoid/commitlint-github-action@v1
         with:
-          configFile: '.commitlintrc.yml'
+          configFile: './.commitlintrc.yml'

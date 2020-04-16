@@ -13,12 +13,25 @@ const overpassEndpoint = "https://overpass-api.de/api/interpreter"
 const query = "[bbox:%f,%f,%f,%f];(way[highway];way[building];);out geom;"
 
 func call(query string) (body io.ReadCloser, err error) {
-	resp, err := http.Get(overpassEndpoint + "?data=" + query)
+	req, err := http.NewRequest("GET", overpassEndpoint, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return resp.Body, nil;
+	q := req.URL.Query()
+	q.Add("data", query)
+	req.URL.RawQuery = q.Encode()
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != 200 {
+		return nil, errors.New(resp.Status)
+	}
+
+	return resp.Body, nil
 }
 
 func makeQuery(lat1, lon1, lat2, lon2 float64) string {

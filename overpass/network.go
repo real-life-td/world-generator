@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"math"
 	"net/http"
 )
 
@@ -33,8 +34,16 @@ func makeQuery(lat1, lon1, lat2, lon2 float64) string {
 }
 
 func checkCoordinates(lat, lon float64) error {
+	if math.IsNaN(lat) || math.IsInf(lat, 0) {
+		return errors.New("latitude must be non-infinite and not nan")
+	}
+
 	if -90.0 > lat || lat > 90.0 {
 		return errors.New("latitude must be in range -90 to 90 inclusive")
+	}
+
+	if math.IsNaN(lon) || math.IsInf(lon, 0) {
+		return errors.New("longitude must be non-infinite and not nan")
 	}
 
 	if -180.0 > lon || lon > 180.0 {
@@ -44,7 +53,7 @@ func checkCoordinates(lat, lon float64) error {
 	return nil
 }
 
-func executeQuery(lat1, lon1, lat2, lon2 float64) (result *overpassResult, err error) {
+func ExecuteQuery(lat1, lon1, lat2, lon2 float64) (result *overpassResult, err error) {
 	err = checkCoordinates(lat1, lon1)
 	if err != nil {
 		return nil, err

@@ -84,6 +84,10 @@ func ExecuteQuery(lat1, lon1, lat2, lon2 float64) (result *overpassResult, err e
 	}
 
 	result = new(overpassResult)
-	json.NewDecoder(body).Decode(result)
+	err = json.NewDecoder(body).Decode(result)
+	if err != nil {
+		return nil, err
+	}
+
 	return result, nil
 }

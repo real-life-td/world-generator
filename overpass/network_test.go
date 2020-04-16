@@ -34,22 +34,22 @@ func TestExecuteQuery(t *testing.T) {
 	invalidCoords(0, 0, math.Inf(1), 0)
 	invalidCoords(0, 0, 0, -181)
 	invalidCoords(0, 0, 0, 181)
-	invalidCoords(0, 0,0, math.NaN())
-	invalidCoords(0, 0,0, math.Inf(-1))
-	invalidCoords(0, 0,0, math.Inf(1))
+	invalidCoords(0, 0, 0, math.NaN())
+	invalidCoords(0, 0, 0, math.Inf(-1))
+	invalidCoords(0, 0, 0, math.Inf(1))
 
 	testData := &overpassResult{
 		Version: "test",
 		Elements: []*way{
 			{
-				Id: 1,
+				Id:     1,
 				Bounds: [4]int{2, 3, 4, 5},
-				Nodes: []int{6, 7},
+				Nodes:  []int{6, 7},
 				Geometry: []*latLon{
 					{8.0, 9.0},
 				},
 				Tags: &tags{
-					Highway: "primary",
+					Highway:  "primary",
 					Building: "yes",
 				},
 			},

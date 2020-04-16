@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-const overpassEndpoint = "https://overpass-api.de/api/interpreter"
+var overpassEndpoint = "https://overpass-api.de/api/interpreter"
 const query = "[bbox:%f,%f,%f,%f];(way[highway];way[building];);out geom;"
 
 func call(query string) (body io.ReadCloser, err error) {

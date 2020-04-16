@@ -26,6 +26,5 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: wagoid/commitlint-github-action@v1.6.0
-        with:
-          configFile: './.commitlintrc.yml'
+      - run: echo "module.exports = {extends:['@commitlint/config-conventional']};" > commitlint.config.js
+      - uses: wagoid/commitlint-github-action@v1

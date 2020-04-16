@@ -1,0 +1,30 @@
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  go-fmt:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - run: awk '$1=="go"{print $2}' go.mod | xargs -I {} echo "::set-output name=version::{}"
+        id: go_mod
+
+      - uses: actions/setup-go@v1
+        with:
+          go-version: ${{ steps.go_mod.outputs.version }}
+
+      - run: ( gofmt -l . | grep -q ^ ) && echo "Code is not formatted with go fmt" && exit 1 || exit 0
+  commit-fmt:
+    runs-on: ubuntu-latest
+    env:
+        GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - run: echo "module.exports = {extends:['@commitlint/config-conventional']};" > commitlint.config.js
+      - uses: wagoid/commitlint-github-action@v1

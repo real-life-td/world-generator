@@ -2,7 +2,6 @@ package overpass
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/stretchr/testify/require"
 	"math"
 	"net/http"
@@ -56,17 +55,46 @@ func TestExecuteQuery(t *testing.T) {
 		},
 	}
 
+	// Create a test server that will work
 	testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		body, err := json.Marshal(testData)
 		require.NoError(t, err)
 
-		_, err = fmt.Fprint(w, string(body))
+		w.WriteHeader(200)
+		_, err = w.Write(body)
 		require.NoError(t, err)
 	}))
 	overpassEndpoint = testServer.URL
-	defer testServer.Close()
 
 	resp, err := ExecuteQuery(0, 0, 0, 0)
 	require.NoError(t, err)
 	require.Equal(t, testData, resp)
+
+	testServer.Close()
+
+	// Create a test server that returns the 500 status code
+	testServer = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusInternalServerError)
+
+		_, err := w.Write([]byte("500 - test error"))
+		require.NoError(t, err)
+	}))
+	overpassEndpoint = testServer.URL
+
+	resp, err = ExecuteQuery(0, 0, 0, 0)
+	require.Error(t, err)
+
+	testServer.Close()
+
+	testServer = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(200)
+		_, err = w.Write([]byte("This is not valid JSON"))
+		require.NoError(t, err)
+	}))
+	overpassEndpoint = testServer.URL
+
+	resp, err = ExecuteQuery(0, 0, 0, 0)
+	require.Error(t, err)
+
+	testServer.Close()
 }

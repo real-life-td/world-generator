@@ -1,6 +1,6 @@
 package overpass
 
-type overpassResult struct {
+type Result struct {
 	Version  string
 	Elements []*way
 }

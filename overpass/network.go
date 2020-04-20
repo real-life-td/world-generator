@@ -67,7 +67,7 @@ func checkCoordinates(lat, lon float64) error {
 	return nil
 }
 
-func ExecuteQuery(lat1, lon1, lat2, lon2 float64) (result *overpassResult, err error) {
+func ExecuteQuery(lat1, lon1, lat2, lon2 float64) (result *Result, err error) {
 	err = checkCoordinates(lat1, lon1)
 	if err != nil {
 		return nil, err
@@ -84,7 +84,7 @@ func ExecuteQuery(lat1, lon1, lat2, lon2 float64) (result *overpassResult, err e
 		return nil, err
 	}
 
-	result = new(overpassResult)
+	result = new(Result)
 	err = json.NewDecoder(body).Decode(result)
 	if err != nil {
 		return nil, err

@@ -17,7 +17,7 @@ type Tags struct {
 
 type Way struct {
 	Id       uint64
-	Bounds   [4]int
+	Bounds   [4]float64
 	Nodes    []uint64
 	Geometry []*LatLon
 	Tags     *Tags

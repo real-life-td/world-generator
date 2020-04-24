@@ -1,7 +1,6 @@
 package overpass
 
 type Result struct {
-	Version  string
 	Elements []*Way
 }
 

@@ -38,7 +38,6 @@ func TestExecuteQuery(t *testing.T) {
 	invalidCoords(0, 0, 0, math.Inf(1))
 
 	testData := &Result{
-		Version: "test",
 		Elements: []*Way{
 			{
 				Id:     1,

@@ -11,7 +11,6 @@ func TestConvert(t *testing.T) {
 	metadata := world.NewMetadata(100, 100, 0.0, 0.0, 1.0, 1.0)
 
 	result := overpass.Result{
-		Version: "1",
 		Elements: []*overpass.Way{
 			{
 				Id:     0,

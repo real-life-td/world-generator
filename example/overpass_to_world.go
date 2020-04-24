@@ -67,7 +67,7 @@ func example(w http.ResponseWriter, req *http.Request) {
 	params, err := getQueryParams(req.URL)
 	if err != nil {
 		w.Header().Set("Content-Type", "text/plain")
-		_, _ = fmt.Fprintln(w, "Invalid query parameters: " + err.Error())
+		_, _ = fmt.Fprintln(w, "Invalid query parameters: "+err.Error())
 		return
 	}
 
@@ -75,7 +75,7 @@ func example(w http.ResponseWriter, req *http.Request) {
 	result, err := overpass.ExecuteQuery(params.lat1, params.lon1, params.lat2, params.lon2)
 	if err != nil {
 		w.Header().Set("Content-Type", "text/plain")
-		_, _ = fmt.Fprintln(w, "Internal error when executing Overpass query: " + err.Error())
+		_, _ = fmt.Fprintln(w, "Internal error when executing Overpass query: "+err.Error())
 		return
 	}
 
@@ -84,7 +84,7 @@ func example(w http.ResponseWriter, req *http.Request) {
 	world, err := convert.Convert(metadata, result)
 	if err != nil {
 		w.Header().Set("Content-Type", "text/plain")
-		_, _ = fmt.Fprintln(w, "Internal error when executing converting: " + err.Error())
+		_, _ = fmt.Fprintln(w, "Internal error when executing converting: "+err.Error())
 		return
 	}
 
@@ -92,7 +92,7 @@ func example(w http.ResponseWriter, req *http.Request) {
 	w.Header().Set("Content-Type", "image/svg+xml")
 
 	s := svg.New(w)
-	s.Start(metadata.Width(),metadata.Height())
+	s.Start(metadata.Width(), metadata.Height())
 	renderContainer(s, world)
 	s.End()
 }

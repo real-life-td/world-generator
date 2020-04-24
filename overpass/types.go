@@ -14,9 +14,13 @@ type Tags struct {
 	Building string
 }
 
+type Bounds struct {
+	MinLat, MinLon, MaxLat, MaxLon float64
+}
+
 type Way struct {
 	Id       uint64
-	Bounds   [4]float64
+	Bounds   *Bounds
 	Nodes    []uint64
 	Geometry []*LatLon
 	Tags     *Tags

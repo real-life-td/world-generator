@@ -41,7 +41,7 @@ func TestExecuteQuery(t *testing.T) {
 		Elements: []*Way{
 			{
 				Id:     1,
-				Bounds: [4]float64{2, 3, 4, 5},
+				Bounds: &Bounds{MinLat: 2, MinLon: 3, MaxLat: 4, MaxLon: 5},
 				Nodes:  []uint64{6, 7},
 				Geometry: []*LatLon{
 					{8.0, 9.0},

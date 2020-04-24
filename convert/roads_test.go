@@ -19,7 +19,7 @@ func TestConvertRoads(t *testing.T) {
 	roadElements := []*overpass.Way{
 		{
 			Id:     0,
-			Bounds: [4]float64{0, 0, 0.5, 0.5},
+			Bounds: &overpass.Bounds{MinLat: 0, MinLon: 0, MaxLat: 0.5, MaxLon: 0.5},
 			Nodes:  []uint64{0, 1, 2},
 			Geometry: []*overpass.LatLon{
 				{0.0, 0.0},
@@ -30,7 +30,7 @@ func TestConvertRoads(t *testing.T) {
 		},
 		{
 			Id:     1,
-			Bounds: [4]float64{0.5, 0.5, 1.0, 1.0},
+			Bounds: &overpass.Bounds{MinLat: 0.5, MinLon: 0.5, MaxLat: 1.0, MaxLon: 1.0},
 			Nodes:  []uint64{2, 3, 4},
 			Geometry: []*overpass.LatLon{
 				{0.5, 0.5},
@@ -41,7 +41,7 @@ func TestConvertRoads(t *testing.T) {
 		},
 		{
 			Id:     2,
-			Bounds: [4]float64{0.0, 1.0, 0.5, 1.0},
+			Bounds: &overpass.Bounds{MinLat: 0.0, MinLon: 1.0, MaxLat: 0.5, MaxLon: 1.0},
 			Nodes:  []uint64{5, 3},
 			Geometry: []*overpass.LatLon{
 				{0, 1.0},

@@ -18,36 +18,36 @@ func TestConvertRoads(t *testing.T) {
 
 	roadElements := []*overpass.Way{
 		{
-			Id:       0,
-			Bounds:   [4]float64{0, 0, 0.5, 0.5},
-			Nodes:    []uint64{0, 1, 2},
+			Id:     0,
+			Bounds: [4]float64{0, 0, 0.5, 0.5},
+			Nodes:  []uint64{0, 1, 2},
 			Geometry: []*overpass.LatLon{
 				{0.0, 0.0},
 				{0.5, 0.0},
 				{0.5, 0.5},
 			},
-			Tags:     &overpass.Tags{Highway: "primary"},
+			Tags: &overpass.Tags{Highway: "primary"},
 		},
 		{
-			Id:       1,
-			Bounds:   [4]float64{0.5, 0.5, 1.0, 1.0},
-			Nodes:    []uint64{2, 3, 4},
+			Id:     1,
+			Bounds: [4]float64{0.5, 0.5, 1.0, 1.0},
+			Nodes:  []uint64{2, 3, 4},
 			Geometry: []*overpass.LatLon{
 				{0.5, 0.5},
 				{0.5, 1.0},
 				{1.0, 1.0},
 			},
-			Tags:     &overpass.Tags{Highway: "primary"},
+			Tags: &overpass.Tags{Highway: "primary"},
 		},
 		{
-			Id:       2,
-			Bounds:   [4]float64{0.0, 1.0, 0.5, 1.0},
-			Nodes:    []uint64{5, 3},
+			Id:     2,
+			Bounds: [4]float64{0.0, 1.0, 0.5, 1.0},
+			Nodes:  []uint64{5, 3},
 			Geometry: []*overpass.LatLon{
 				{0, 1.0},
 				{0.5, 1.0},
 			},
-			Tags:     &overpass.Tags{Highway: "primary"},
+			Tags: &overpass.Tags{Highway: "primary"},
 		},
 	}
 
@@ -57,7 +57,7 @@ func TestConvertRoads(t *testing.T) {
 		return id
 	}
 
-	node0 := world.NewNode(makeId(0, world.NodeType), 0,0)
+	node0 := world.NewNode(makeId(0, world.NodeType), 0, 0)
 	node1 := world.NewNode(makeId(1, world.NodeType), 0, 50)
 	node2 := world.NewNode(makeId(2, world.NodeType), 50, 50)
 	node3 := world.NewNode(makeId(3, world.NodeType), 100, 50)

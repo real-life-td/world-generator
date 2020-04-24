@@ -7,6 +7,7 @@ import (
 )
 
 type elementType int
+
 const (
 	BuildingType elementType = iota
 	HighwayType

@@ -18,27 +18,27 @@ func TestConvertBuildings(t *testing.T) {
 
 	buildingElements := []*overpass.Way{
 		{
-			Id:       0,
-			Bounds:   [4]float64{0.0, 0.0, 0.5, 0.5},
-			Nodes:    []uint64{0, 1, 2, 3},
+			Id:     0,
+			Bounds: [4]float64{0.0, 0.0, 0.5, 0.5},
+			Nodes:  []uint64{0, 1, 2, 3},
 			Geometry: []*overpass.LatLon{
 				{0.0, 0.0},
 				{0.5, 0.0},
 				{0.5, 0.5},
 				{0.0, 0.5},
 			},
-			Tags:     &overpass.Tags{Building: "yes"},
+			Tags: &overpass.Tags{Building: "yes"},
 		},
 		{
-			Id:       1,
-			Bounds:   [4]float64{0.6, 0.6, 1.0, 1.0},
-			Nodes:    []uint64{4, 5, 6},
+			Id:     1,
+			Bounds: [4]float64{0.6, 0.6, 1.0, 1.0},
+			Nodes:  []uint64{4, 5, 6},
 			Geometry: []*overpass.LatLon{
 				{0.6, 0.6},
 				{0.6, 1.0},
 				{1.0, 1.0},
 			},
-			Tags:     &overpass.Tags{Building: "yes"},
+			Tags: &overpass.Tags{Building: "yes"},
 		},
 	}
 

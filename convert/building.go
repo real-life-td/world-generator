@@ -24,7 +24,7 @@ func convertBuildings(metadata *world.Metadata, buildingElements []*overpass.Way
 			return nil, err
 		}
 
-		points := make([]*world.Node, 0, len(e.Nodes) - 1)
+		points := make([]*world.Node, 0, len(e.Nodes)-1)
 		for i, nodeId := range e.Nodes {
 			id, err := world.NewId(nodeId, world.NodeType)
 			if err != nil {

@@ -11,29 +11,29 @@ func TestConvert(t *testing.T) {
 	metadata := world.NewMetadata(100, 100, 0.0, 0.0, 1.0, 1.0)
 
 	result := overpass.Result{
-		Version:  "1",
+		Version: "1",
 		Elements: []*overpass.Way{
 			{
-				Id:       0,
-				Bounds:   [4]float64{0.0, 0.0, 0.5, 0.5},
-				Nodes:    []uint64{0, 1},
+				Id:     0,
+				Bounds: [4]float64{0.0, 0.0, 0.5, 0.5},
+				Nodes:  []uint64{0, 1},
 				Geometry: []*overpass.LatLon{
 					{0.0, 0.0},
 					{0.5, 0.5},
 				},
-				Tags:     &overpass.Tags{Highway: "primary"},
+				Tags: &overpass.Tags{Highway: "primary"},
 			},
 			{
-				Id:       1,
-				Bounds:   [4]float64{0.6, 0.6, 1.0, 1.0},
-				Nodes:    []uint64{2, 3, 4, 5},
+				Id:     1,
+				Bounds: [4]float64{0.6, 0.6, 1.0, 1.0},
+				Nodes:  []uint64{2, 3, 4, 5},
 				Geometry: []*overpass.LatLon{
 					{0.6, 0.6},
 					{1.0, 0.6},
 					{1.0, 1.0},
 					{0.6, 1.0},
 				},
-				Tags:     &overpass.Tags{Building: "yes"},
+				Tags: &overpass.Tags{Building: "yes"},
 			},
 		},
 	}
@@ -69,7 +69,7 @@ func TestConvert(t *testing.T) {
 }
 
 func TestClassify(t *testing.T) {
-	test := func (tags overpass.Tags, expected elementType, shouldError bool) {
+	test := func(tags overpass.Tags, expected elementType, shouldError bool) {
 		w := overpass.Way{
 			Id:       0,
 			Bounds:   [4]float64{0, 0, 0, 0},

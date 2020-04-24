@@ -38,11 +38,10 @@ func TestExecuteQuery(t *testing.T) {
 	invalidCoords(0, 0, 0, math.Inf(1))
 
 	testData := &Result{
-		Version: "test",
 		Elements: []*Way{
 			{
 				Id:     1,
-				Bounds: [4]float64{2, 3, 4, 5},
+				Bounds: &Bounds{MinLat: 2, MinLon: 3, MaxLat: 4, MaxLon: 5},
 				Nodes:  []uint64{6, 7},
 				Geometry: []*LatLon{
 					{8.0, 9.0},

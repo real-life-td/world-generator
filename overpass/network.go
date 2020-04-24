@@ -11,7 +11,7 @@ import (
 
 var overpassEndpoint = "https://overpass-api.de/api/interpreter"
 
-const query = "[bbox:%f,%f,%f,%f];(way[highway];way[building];);out geom;"
+const query = "[bbox:%f,%f,%f,%f][out:json];(way[highway];way[building];);out geom;"
 
 func call(query string) (body io.ReadCloser, err error) {
 	req, err := http.NewRequest("GET", overpassEndpoint, nil)

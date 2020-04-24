@@ -37,17 +37,17 @@ func TestExecuteQuery(t *testing.T) {
 	invalidCoords(0, 0, 0, math.Inf(-1))
 	invalidCoords(0, 0, 0, math.Inf(1))
 
-	testData := &overpassResult{
+	testData := &Result{
 		Version: "test",
-		Elements: []*way{
+		Elements: []*Way{
 			{
 				Id:     1,
-				Bounds: [4]int{2, 3, 4, 5},
-				Nodes:  []int{6, 7},
-				Geometry: []*latLon{
+				Bounds: [4]float64{2, 3, 4, 5},
+				Nodes:  []uint64{6, 7},
+				Geometry: []*LatLon{
 					{8.0, 9.0},
 				},
-				Tags: &tags{
+				Tags: &Tags{
 					Highway:  "primary",
 					Building: "yes",
 				},

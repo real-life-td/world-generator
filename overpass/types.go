@@ -1,24 +1,24 @@
 package overpass
 
-type overpassResult struct {
+type Result struct {
 	Version  string
-	Elements []*way
+	Elements []*Way
 }
 
-type latLon struct {
+type LatLon struct {
 	Lat float64
 	Lon float64
 }
 
-type tags struct {
+type Tags struct {
 	Highway  string
 	Building string
 }
 
-type way struct {
-	Id       int
-	Bounds   [4]int
-	Nodes    []int
-	Geometry []*latLon
-	Tags     *tags
+type Way struct {
+	Id       uint64
+	Bounds   [4]float64
+	Nodes    []uint64
+	Geometry []*LatLon
+	Tags     *Tags
 }

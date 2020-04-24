@@ -51,12 +51,18 @@ func TestConvertRoads(t *testing.T) {
 		},
 	}
 
-	node0 := world.NewNode(0, 0,0)
-	node1 := world.NewNode(1, 0, 50)
-	node2 := world.NewNode(2, 50, 50)
-	node3 := world.NewNode(3, 100, 50)
-	node4 := world.NewNode(4, 100, 100)
-	node5 := world.NewNode(5, 100, 0)
+	makeId := func(baseId uint64, idType world.Type) world.Id {
+		id, err := world.NewId(baseId, idType)
+		require.NoError(t, err)
+		return id
+	}
+
+	node0 := world.NewNode(makeId(0, world.NodeType), 0,0)
+	node1 := world.NewNode(makeId(1, world.NodeType), 0, 50)
+	node2 := world.NewNode(makeId(2, world.NodeType), 50, 50)
+	node3 := world.NewNode(makeId(3, world.NodeType), 100, 50)
+	node4 := world.NewNode(makeId(4, world.NodeType), 100, 100)
+	node5 := world.NewNode(makeId(5, world.NodeType), 100, 0)
 
 	expectedRoads := []*world.Road{
 		world.NewRoad(1, node0, node1, 1),
@@ -66,44 +72,23 @@ func TestConvertRoads(t *testing.T) {
 		world.NewRoad(1, node5, node3, 1),
 	}
 
-	roadsEqual := func(r1, r2 *world.Road) bool {
-		if r1.Cost() != r2.Cost() {
-			return false
-		}
-
-		nodesEqual := func(n1, n2 *world.Node) bool {
-			return n1.X() == n2.X() && n1.Y() == n2.Y()
-		}
-
-		// Nodes can be in either order
-		if nodesEqual(r1.Node1(), r2.Node1()) {
-			return nodesEqual(r1.Node2(), r2.Node2())
-		} else {
-			return nodesEqual(r1.Node1(), r2.Node2()) && nodesEqual(r1.Node2(), r2.Node1())
-		}
-	}
-
 	roads, err := convertRoads(metadata, roadElements)
 	require.NotNil(t, roads)
 	require.NoError(t, err)
 
-	require.Equal(t, len(expectedRoads), len(roads))
-	for _, road := range roads {
-		matchFound := false
-		for _, expectedRoad := range expectedRoads {
-			if roadsEqual(expectedRoad, road) {
-				matchFound = true
-				break
-			}
-		}
-
-		require.True(t, matchFound, "No match found for road")
-	}
-
+	// Check that every road was given a unique id
 	usedIds := make([]world.Id, 0, len(roads))
 	for _, road := range roads {
 		require.Equal(t, world.RoadType, road.Id().Type())
 		require.NotContains(t, usedIds, road.Id(), "ids must be unique")
 		usedIds = append(usedIds, road.Id())
 	}
+
+	// Replace each road with a road with the same values but with ids all equal to 1
+	for i, road := range roads {
+		roads[i] = world.NewRoad(1, road.Node1(), road.Node2(), road.Cost())
+	}
+
+	// With the new ids the roads should match the expected roads
+	require.ElementsMatch(t, expectedRoads, roads)
 }

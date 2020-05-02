@@ -8,6 +8,14 @@ github.com/real-life-td/game-core v1.1.0 h1:/8aHgUyyWokxRm4BZ/OJvZDEizDbR+HdQ2Jx
 github.com/real-life-td/game-core v1.1.0/go.mod h1:Kv25YHv273lWmqiJyBCThxfJdyNF2UuNqQJGI7/AZzs=
 github.com/real-life-td/game-core v1.2.0 h1:ikqqfvDVtvh7gwmzRXcUJcoR89h7RILhdx/sLOwBBoA=
 github.com/real-life-td/game-core v1.2.0/go.mod h1:Kv25YHv273lWmqiJyBCThxfJdyNF2UuNqQJGI7/AZzs=
+github.com/real-life-td/game-core v1.4.0 h1:jdMHEekp2sBFX3/qRhSHRCrH6XNx3qiLzCRhHj4fC1E=
+github.com/real-life-td/game-core v1.4.0/go.mod h1:NchNMhn7iOM64Cyjgj1CUs6pdZpdCOVV1P/N+EmMfpc=
+github.com/real-life-td/math v1.3.0 h1:oOegePw5VQN2ToHDfpuRqIxdjV+Mvvxd85Fx1f6FjVI=
+github.com/real-life-td/math v1.3.0/go.mod h1:XYtqdYjnTybZ4UxtXpNvFBZcHlVip3Jbacvx/tDy9ys=
+github.com/real-life-td/math v1.4.0 h1:VZ1Lo+VIG9pccjdISMhqbJMYBF0jo1i7AWQuHt2cDeA=
+github.com/real-life-td/math v1.4.0/go.mod h1:XYtqdYjnTybZ4UxtXpNvFBZcHlVip3Jbacvx/tDy9ys=
+github.com/real-life-td/math v1.5.0 h1:EToK/bccLEhWNjsxMzWhOHkNgC+q0zinNtXC4amtnvA=
+github.com/real-life-td/math v1.5.0/go.mod h1:XYtqdYjnTybZ4UxtXpNvFBZcHlVip3Jbacvx/tDy9ys=
 github.com/stretchr/objx v0.1.0 h1:4G4v2dO3VZwixGIRoQ5Lfboy6nUhCyYzaqnIAPPhYs4=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.5.1 h1:nOGnQDM7FYENwehXlg/kFVnos3rEvtKTjRvOWSzb6H4=

@@ -8,3 +8,5 @@ require (
 	github.com/real-life-td/math v1.5.0
 	github.com/stretchr/testify v1.5.1
 )
+
+replace github.com/real-life-td/game-core => ../game-core

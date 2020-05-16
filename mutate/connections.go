@@ -8,8 +8,6 @@ import (
 	"math"
 )
 
-
-
 type toRemove struct {
 	building *world.Building
 	connection *world.Connection
@@ -102,9 +100,9 @@ func closestConnection(building *world.Building, r *world.Road) *world.Connectio
 	return world.NewConnection(r, closestDistance, closestPoint)
 }
 
-// Returns only roads that are closer then any other road that is connected and connected by only other roads that are
-// connected (within 5 roads). Because of the 5 road limit and the faster implementation used this function can return
-// different results based on the order of the roads
+// Iterate through the map in it's arbitrary order. Returns only the connections that are closer than any other
+// connection within 5 roads. This means that no two connections will be within 5 roads of another. Since map ordering
+// is arbitrary the output of this function is generally not consistent.
 func cullPaths(closeEnough map[world.Id]*world.Connection) []*world.Connection {
 	passing := make([]*world.Connection, 0)
 

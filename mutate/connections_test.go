@@ -2,6 +2,7 @@ package mutate
 
 import (
 	"github.com/real-life-td/game-core/world"
+	"github.com/real-life-td/math/primitives"
 	"github.com/stretchr/testify/require"
 	"testing"
 )
@@ -45,7 +46,11 @@ func TestInitBuildingConnections(t *testing.T) {
 	container := world.NewContainer(nil, []*world.Road{r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13}, []*world.Building{b})
 
 	InitBuildingConnections(container, 2.0)
-	require.ElementsMatch(t, b.Connections(), []*world.Road{r1, r13})
+	expectedConnections := []*world.Connection{
+		world.NewConnection(r1, 10.0, primitives.NewPoint(20, 0)),
+		world.NewConnection(r13, 30.0, primitives.NewPoint(0, 20)),
+	}
+	require.ElementsMatch(t, expectedConnections, b.Connections())
 
 	InitBuildingConnections(container, 3.0)
 	require.Equal(t, len(b.Connections()), 3)

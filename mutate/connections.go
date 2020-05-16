@@ -8,6 +8,8 @@ import (
 	"math"
 )
 
+
+
 type toRemove struct {
 	building *world.Building
 	connection *world.Connection
@@ -107,52 +109,47 @@ func cullPaths(closeEnough map[world.Id]*world.Connection) []*world.Connection {
 	passing := make([]*world.Connection, 0)
 
 	visited := make(map[world.Id]bool)
+
+	var breadthFirst func(cur *world.Road, distanceLimit int) *world.Connection
+	breadthFirst = func(cur *world.Road, distanceLimit int) *world.Connection {
+		closest := closeEnough[cur.Id()] // might be nil if the current road isn't connected to a building
+		if distanceLimit == 0 {
+			return closest
+		}
+
+		for _, connected := range cur.Connections() {
+			if !visited[connected.Id()] {
+				visited[connected.Id()] = true
+
+				potentialClosest := breadthFirst(connected, distanceLimit - 1)
+				if potentialClosest == nil {
+					continue
+				}
+
+				if closest == nil || potentialClosest.Distance() < closest.Distance() {
+					closest = potentialClosest
+				}
+			}
+		}
+
+		return closest
+	}
+
+
 	for _, c := range closeEnough {
-		if visited[c.Road().Id()] {
-			continue
+		if !visited[c.Road().Id()] {
+			passing = append(passing, breadthFirst(c.Road(), 5))
 		}
-
-		closest := c
-		toVisit := append([]*world.Road(nil), c.Road().Connections()...)
-		curLevel := 0 // How many roads "jumps" from the original road c
-		nextIncrement := 1 // How many roads to process in toVisit before the next level
-
-		for len(toVisit) > 0 {
-			nextIncrement--
-			if nextIncrement == 0 {
-				curLevel++
-				if curLevel == 6 {
-					break
-				}
-
-				nextIncrement = len(toVisit)
-			}
-
-			cur := toVisit[0]
-			toVisit = toVisit[1:]
-
-			curData, present := closeEnough[cur.Id()]
-			if present {
-				if curData.Distance() < closest.Distance() {
-					closest = curData
-				}
-
-				for _, connected := range cur.Connections() {
-					if !visited[connected.Id()] {
-						visited[connected.Id()] = true
-						toVisit = append(toVisit, connected)
-					}
-				}
-			}
-		}
-
-		passing = append(passing, closest)
 	}
 
 	return passing
 }
 
 func cullWorstScoring(buildings []*world.Building, numToRemove int) {
+	if numToRemove <= 0 {
+		return
+	}
+
 	removeHeap := new(toRemoveMaxHeap)
 	heap.Init(removeHeap)
 

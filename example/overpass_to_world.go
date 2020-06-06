@@ -137,7 +137,7 @@ func renderRoads(s *svg.SVG, roads []*world.Road) {
 				color := visited[connected.Id()]
 
 				if color == white || color == grey {
-					s.Line(cur.X(), cur.Y(), connected.X(), connected.Y(), "stroke-width:3;stroke:rgb(0,0,255)")
+					s.Line(cur.X(), cur.Y(), connected.X(), connected.Y(), "stroke-width:3;stroke:rgb(0,0,255);stroke-linecap:round;")
 				}
 
 				if color == white {
@@ -169,5 +169,6 @@ func renderBuilding(s *svg.SVG, building *world.Building) {
 
 	for _, c := range building.Connections() {
 		s.Circle(c.Road().X(), c.Road().Y(), 4, "stroke-width:1;stroke:rgb(0,255,0);fill:none")
+		s.Line(c.Road().X(), c.Road().Y(), c.PointOnBuilding().X(), c.PointOnBuilding().Y(), "stroke-width:1;stroke:rgb(0,255,0);")
 	}
 }

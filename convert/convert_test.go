@@ -44,12 +44,12 @@ func TestConvert(t *testing.T) {
 	}
 
 	expectedRoads := []*world.Road{
-		world.NewRoad(
-			makeId(0, world.RoadType),
-			world.NewNode(makeId(0, world.NodeType), 0, 0),
-			world.NewNode(makeId(1, world.NodeType), 50, 50),
-			1),
+		world.NewRoad(makeId(0, world.RoadType), world.NewNode(makeId(0, world.NodeType), 0, 0)),
+		world.NewRoad(makeId(1, world.RoadType), world.NewNode(makeId(1, world.NodeType), 50, 50)),
 	}
+
+	expectedRoads[0].InitOperation(&world.RoadInitOperation{NewConnections: []*world.Road{expectedRoads[1]}})
+	expectedRoads[1].InitOperation(&world.RoadInitOperation{NewConnections: []*world.Road{expectedRoads[0]}})
 
 	expectedBuildings := []*world.Building{
 		world.NewBuilding(makeId(1, world.BuildingType), []*world.Node{

@@ -57,38 +57,26 @@ func TestConvertRoads(t *testing.T) {
 		return id
 	}
 
-	node0 := world.NewNode(makeId(0, world.NodeType), 0, 0)
-	node1 := world.NewNode(makeId(1, world.NodeType), 0, 50)
-	node2 := world.NewNode(makeId(2, world.NodeType), 50, 50)
-	node3 := world.NewNode(makeId(3, world.NodeType), 100, 50)
-	node4 := world.NewNode(makeId(4, world.NodeType), 100, 100)
-	node5 := world.NewNode(makeId(5, world.NodeType), 100, 0)
-
 	expectedRoads := []*world.Road{
-		world.NewRoad(1, node0, node1, 1),
-		world.NewRoad(1, node1, node2, 1),
-		world.NewRoad(1, node2, node3, 1),
-		world.NewRoad(1, node3, node4, 1),
-		world.NewRoad(1, node5, node3, 1),
+		world.NewRoad(makeId(0, world.RoadType), world.NewNode(makeId(0, world.NodeType), 0, 0)),
+		world.NewRoad(makeId(1, world.RoadType), world.NewNode(makeId(1, world.NodeType), 0, 50)),
+		world.NewRoad(makeId(2, world.RoadType), world.NewNode(makeId(2, world.NodeType), 50, 50)),
+		world.NewRoad(makeId(3, world.RoadType), world.NewNode(makeId(3, world.NodeType), 100, 50)),
+		world.NewRoad(makeId(4, world.RoadType), world.NewNode(makeId(4, world.NodeType), 100, 100)),
+		world.NewRoad(makeId(5, world.RoadType), world.NewNode(makeId(5, world.NodeType), 100, 0)),
 	}
+
+	expectedRoads[0].InitOperation(&world.RoadInitOperation{NewConnections: []*world.Road{expectedRoads[1]}})
+	expectedRoads[1].InitOperation(&world.RoadInitOperation{NewConnections: []*world.Road{expectedRoads[0], expectedRoads[2]}})
+	expectedRoads[2].InitOperation(&world.RoadInitOperation{NewConnections: []*world.Road{expectedRoads[1], expectedRoads[3]}})
+	expectedRoads[3].InitOperation(&world.RoadInitOperation{NewConnections: []*world.Road{expectedRoads[2], expectedRoads[4], expectedRoads[5]}})
+	expectedRoads[4].InitOperation(&world.RoadInitOperation{NewConnections: []*world.Road{expectedRoads[3]}})
+	expectedRoads[5].InitOperation(&world.RoadInitOperation{NewConnections: []*world.Road{expectedRoads[3]}})
 
 	roads, err := convertRoads(metadata, roadElements)
 	require.NotNil(t, roads)
 	require.NoError(t, err)
 
-	// Check that every road was given a unique id
-	usedIds := make([]world.Id, 0, len(roads))
-	for _, road := range roads {
-		require.Equal(t, world.RoadType, road.Id().Type())
-		require.NotContains(t, usedIds, road.Id(), "ids must be unique")
-		usedIds = append(usedIds, road.Id())
-	}
-
-	// Replace each road with a road with the same values but with ids all equal to 1
-	for i, road := range roads {
-		roads[i] = world.NewRoad(1, road.Node1(), road.Node2(), road.Cost())
-	}
-
-	// With the new ids the roads should match the expected roads
+	// The order of the road connections could be different without breaking anything. This doesn't check that currently
 	require.ElementsMatch(t, expectedRoads, roads)
 }

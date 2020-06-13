@@ -6,17 +6,27 @@ import (
 	"github.com/ajstarks/svgo"
 	"github.com/real-life-td/game-core/world"
 	"github.com/real-life-td/world-generator/convert"
+	"github.com/real-life-td/world-generator/mutate"
 	"github.com/real-life-td/world-generator/overpass"
 	"log"
 	"math"
 	"net/http"
 	"net/url"
 	"strconv"
+	"time"
 )
 
 type queryParams struct {
 	lat1, lon1, lat2, lon2 float64
 }
+
+type traversalColor byte
+
+const (
+	white traversalColor = iota
+	grey
+	black
+)
 
 func main() {
 	log.Println("Starting server at localhost:8080")
@@ -71,6 +81,7 @@ func example(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	println(time.Now().UnixNano())
 	// Execute an overpass query
 	result, err := overpass.ExecuteQuery(params.lat1, params.lon1, params.lat2, params.lon2)
 	if err != nil {
@@ -78,6 +89,7 @@ func example(w http.ResponseWriter, req *http.Request) {
 		_, _ = fmt.Fprintln(w, "Internal error when executing Overpass query: "+err.Error())
 		return
 	}
+	println(time.Now().UnixNano())
 
 	// Convert the result into a world object
 	metadata := world.NewMetadata(1000, 1000, params.lat1, params.lon1, params.lat2, params.lon2)
@@ -87,6 +99,11 @@ func example(w http.ResponseWriter, req *http.Request) {
 		_, _ = fmt.Fprintln(w, "Internal error when executing converting: "+err.Error())
 		return
 	}
+	println(time.Now().UnixNano())
+
+	mutate.InitBuildingConnections(world, 2.0)
+
+	println(time.Now().UnixNano())
 
 	// Translate the world into SVG
 	w.Header().Set("Content-Type", "image/svg+xml")
@@ -98,17 +115,46 @@ func example(w http.ResponseWriter, req *http.Request) {
 }
 
 func renderContainer(s *svg.SVG, container *world.Container) {
-	for _, r := range container.Roads() {
-		renderRoad(s, r)
-	}
+	renderRoads(s, container.Roads())
 
 	for _, b := range container.Buildings() {
 		renderBuilding(s, b)
 	}
 }
 
-func renderRoad(s *svg.SVG, road *world.Road) {
-	s.Line(road.Node1().X(), road.Node1().Y(), road.Node2().X(), road.Node2().Y(), "stroke-width:3;stroke:rgb(0,0,0)")
+func renderRoads(s *svg.SVG, roads []*world.Road) {
+	visited := make(map[world.Id]traversalColor)
+
+	// Uses a breadth first search to render the road network. This implementation ensures that each road segment is
+	// rendered only once.
+	traversalRender := func(start *world.Road) {
+		toVisit := []*world.Road{start}
+		for len(toVisit) > 0 {
+			cur := toVisit[0]
+			toVisit = toVisit[1:]
+			visited[cur.Id()] = black
+
+			for _, connected := range cur.Connections() {
+				color := visited[connected.Id()]
+
+				if color == white || color == grey {
+					s.Line(cur.X(), cur.Y(), connected.X(), connected.Y(), "stroke-width:3;stroke:rgb(0,0,255);stroke-linecap:round;")
+				}
+
+				if color == white {
+					visited[connected.Id()] = grey
+					toVisit = append(toVisit, connected)
+				}
+			}
+		}
+	}
+
+	// Ensure that all roads are rendered if they are not connected to others
+	for _, r := range roads {
+		if visited[r.Id()] == white {
+			traversalRender(r)
+		}
+	}
 }
 
 func renderBuilding(s *svg.SVG, building *world.Building) {
@@ -121,4 +167,9 @@ func renderBuilding(s *svg.SVG, building *world.Building) {
 	}
 
 	s.Polygon(x, y)
+
+	for _, c := range building.Connections() {
+		s.Circle(c.Road().X(), c.Road().Y(), 4, "stroke-width:1;stroke:rgb(0,255,0);fill:none")
+		s.Line(c.Road().X(), c.Road().Y(), c.PointOnBuilding().X(), c.PointOnBuilding().Y(), "stroke-width:1;stroke:rgb(0,255,0);")
+	}
 }

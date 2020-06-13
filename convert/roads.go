@@ -17,41 +17,46 @@ func convertRoads(metadata *world.Metadata, roadElements []*overpass.Way) (roads
 	}
 
 	roads = make([]*world.Road, 0, len(roadElements))
-	placedNodes := make(map[uint64]*world.Node)
-
-	var nextRoadId uint64 = 0
+	placedRoads := make(map[uint64]*world.Road)
 
 	for _, e := range roadElements {
 		// Road segments will go from this node to the next in the array
-		var prevNode *world.Node
+		var prevRoad *world.Road
 		for i, nodeId := range e.Nodes {
-			// Check if the node has already been created and create it if not
-			p := placedNodes[nodeId]
+			// check if a road has already been placed for the node
+			r := placedRoads[nodeId]
 
-			if p == nil {
-				id, err := world.NewId(nodeId, world.NodeType)
+			if r == nil {
+				roadNodeId, err := world.NewId(nodeId, world.NodeType)
+				if err != nil {
+					return nil, err
+				}
+
+				roadId, err := world.NewId(nodeId, world.RoadType)
 				if err != nil {
 					return nil, err
 				}
 
 				lat, lon := e.Geometry[i].Lat, e.Geometry[i].Lon
 				x, y := toGameCoords(lat, lon)
-				p = world.NewNode(id, x, y)
-				placedNodes[nodeId] = p
+
+				r = world.NewRoad(roadId, world.NewNode(roadNodeId, x, y))
+				placedRoads[nodeId] = r
+				roads = append(roads, r)
 			}
 
-			// The will be no previous node to connect to on the first loop
-			if i != 0 {
-				id, err := world.NewId(nextRoadId, world.RoadType)
-				nextRoadId++
-				if err != nil {
-					return nil, err
-				}
+			// The will be no previous road to connect to on the first loop
+			if prevRoad != nil {
+				prevRoad.InitOperation(&world.RoadInitOperation{
+					AdditionalConnections: []*world.Road{r},
+				})
 
-				roads = append(roads, world.NewRoad(id, prevNode, p, 1))
+				r.InitOperation(&world.RoadInitOperation{
+					AdditionalConnections: []*world.Road{prevRoad},
+				})
 			}
 
-			prevNode = p
+			prevRoad = r
 		}
 	}
 

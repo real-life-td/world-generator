@@ -58,11 +58,12 @@ func initBuildingConnections(container *world.Container, initialConnectDistance 
 	avgConnections := averageNumberOfConnections(container.Buildings())
 	if avgConnections < targetAvgConnections {
 		initBuildingConnections(container, initialConnectDistance*2, targetAvgConnections)
+		return
+	} else {
+		// Remove any extra connection points
+		numToRemove := int(math.Round((avgConnections - targetAvgConnections) * float64(len(container.Buildings()))))
+		cullWorstScoring(container.Buildings(), numToRemove)
 	}
-
-	// If there are too many connections then delete the worst scoring
-	numToRemove := int(math.Round((avgConnections - targetAvgConnections) * float64(len(container.Buildings()))))
-	cullWorstScoring(container.Buildings(), numToRemove)
 }
 
 func withinBounds(bounds *primitives.Rectangle, roads []*world.Road) []*world.Road {

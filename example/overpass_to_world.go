@@ -21,6 +21,7 @@ type queryParams struct {
 }
 
 type traversalColor byte
+
 const (
 	white traversalColor = iota
 	grey
@@ -126,7 +127,7 @@ func renderRoads(s *svg.SVG, roads []*world.Road) {
 
 	// Uses a breadth first search to render the road network. This implementation ensures that each road segment is
 	// rendered only once.
-	traversalRender := func (start *world.Road) {
+	traversalRender := func(start *world.Road) {
 		toVisit := []*world.Road{start}
 		for len(toVisit) > 0 {
 			cur := toVisit[0]

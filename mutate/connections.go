@@ -9,9 +9,9 @@ import (
 )
 
 type toRemove struct {
-	building *world.Building
+	building   *world.Building
 	connection *world.Connection
-	score float64
+	score      float64
 }
 
 type toRemoveMaxHeap []toRemove
@@ -20,8 +20,8 @@ func (r toRemoveMaxHeap) Len() int           { return len(r) }
 func (r toRemoveMaxHeap) Less(i, j int) bool { return r[i].score > r[j].score }
 func (r toRemoveMaxHeap) Swap(i, j int)      { r[i], r[j] = r[j], r[i] }
 
-func (r *toRemoveMaxHeap) Push(x interface{}) { *r = append(*r, x.(toRemove))}
-func (r toRemoveMaxHeap) Peek() toRemove { return r[len(r) - 1] }
+func (r *toRemoveMaxHeap) Push(x interface{}) { *r = append(*r, x.(toRemove)) }
+func (r toRemoveMaxHeap) Peek() toRemove      { return r[len(r)-1] }
 
 func (r *toRemoveMaxHeap) Pop() interface{} {
 	old := *r
@@ -57,7 +57,7 @@ func initBuildingConnections(container *world.Container, initialConnectDistance 
 	// distance that is twice as large.
 	avgConnections := averageNumberOfConnections(container.Buildings())
 	if avgConnections < targetAvgConnections {
-		initBuildingConnections(container, initialConnectDistance * 2, targetAvgConnections)
+		initBuildingConnections(container, initialConnectDistance*2, targetAvgConnections)
 	}
 
 	// If there are too many connections then delete the worst scoring
@@ -82,11 +82,11 @@ func closestConnection(building *world.Building, r *world.Road) *world.Connectio
 
 	for i, bPoint := range building.Points() {
 		var bNextPoint *world.Node
-		if i == len(building.Points()) - 1 {
+		if i == len(building.Points())-1 {
 			// In the last iteration the next point is at the start of the slice
 			bNextPoint = building.Points()[0]
 		} else {
-			bNextPoint = building.Points()[i + 1]
+			bNextPoint = building.Points()[i+1]
 		}
 
 		p, distance := raycast.ClosestPointTo(bPoint.Point, bNextPoint.Point, r.Point)
@@ -119,7 +119,7 @@ func cullPaths(closeEnough map[world.Id]*world.Connection) []*world.Connection {
 			if !visited[connected.Id()] {
 				visited[connected.Id()] = true
 
-				potentialClosest := breadthFirst(connected, distanceLimit - 1)
+				potentialClosest := breadthFirst(connected, distanceLimit-1)
 				if potentialClosest == nil {
 					continue
 				}
@@ -132,7 +132,6 @@ func cullPaths(closeEnough map[world.Id]*world.Connection) []*world.Connection {
 
 		return closest
 	}
-
 
 	for _, c := range closeEnough {
 		if !visited[c.Road().Id()] {

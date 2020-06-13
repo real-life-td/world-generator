@@ -9,7 +9,7 @@ import (
 
 func TestInitBuildingConnections(t *testing.T) {
 	r1 := world.NewRoad(0, world.NewNode(1, 30, 0))
-	r2 := world.NewRoad(2, world.NewNode(3,40, 0))
+	r2 := world.NewRoad(2, world.NewNode(3, 40, 0))
 	r3 := world.NewRoad(4, world.NewNode(5, 50, 0))
 	r4 := world.NewRoad(6, world.NewNode(7, 60, 0))
 	r5 := world.NewRoad(8, world.NewNode(9, 70, 0))

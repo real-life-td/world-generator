@@ -73,7 +73,6 @@ func TestConvertRoads(t *testing.T) {
 	expectedRoads[4].InitOperation(&world.RoadInitOperation{NewConnections: []*world.Road{expectedRoads[3]}})
 	expectedRoads[5].InitOperation(&world.RoadInitOperation{NewConnections: []*world.Road{expectedRoads[3]}})
 
-
 	roads, err := convertRoads(metadata, roadElements)
 	require.NotNil(t, roads)
 	require.NoError(t, err)

@@ -1,5 +1,6 @@
 github.com/ajstarks/svgo v0.0.0-20200320125537-f189e35d30ca h1:kWzLcty5V2rzOqJM7Tp/MfSX0RMSI1x4IOLApEefYxA=
 github.com/ajstarks/svgo v0.0.0-20200320125537-f189e35d30ca/go.mod h1:K08gAheRH3/J6wwsYMMT4xOr94bZjxIelGM0+d/wbFw=
+github.com/dave/jennifer v1.4.0/go.mod h1:fIb+770HOpJ2fmN9EPPKOqm1vMGhB+TwXKMZhrIygKg=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
@@ -10,6 +11,8 @@ github.com/real-life-td/game-core v1.2.0 h1:ikqqfvDVtvh7gwmzRXcUJcoR89h7RILhdx/s
 github.com/real-life-td/game-core v1.2.0/go.mod h1:Kv25YHv273lWmqiJyBCThxfJdyNF2UuNqQJGI7/AZzs=
 github.com/real-life-td/game-core v1.4.0 h1:jdMHEekp2sBFX3/qRhSHRCrH6XNx3qiLzCRhHj4fC1E=
 github.com/real-life-td/game-core v1.4.0/go.mod h1:NchNMhn7iOM64Cyjgj1CUs6pdZpdCOVV1P/N+EmMfpc=
+github.com/real-life-td/game-core v1.5.0 h1:L8Kdd/eBwj85WKrmZ6aAxYoeuscfMCMz+80OGd8ndjw=
+github.com/real-life-td/game-core v1.5.0/go.mod h1:hs8OxYbj2+fhnQmp65TekkFPpf46Mm510SKmMhiIlKA=
 github.com/real-life-td/math v1.3.0 h1:oOegePw5VQN2ToHDfpuRqIxdjV+Mvvxd85Fx1f6FjVI=
 github.com/real-life-td/math v1.3.0/go.mod h1:XYtqdYjnTybZ4UxtXpNvFBZcHlVip3Jbacvx/tDy9ys=
 github.com/real-life-td/math v1.4.0 h1:VZ1Lo+VIG9pccjdISMhqbJMYBF0jo1i7AWQuHt2cDeA=
